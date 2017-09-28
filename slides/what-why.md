@@ -13,9 +13,11 @@ Your systems __do__ have mathematical properties
 `reverse(reverse(l)) = l`
 
 <div class="notes">
-- A function that reverses a list
-- It is involutive
-- An operation that is its own inverse
+Consider a function that reverses a list
+
+It is its own inverse
+
+This means it is involutive
 </div>
 
 ##
@@ -23,10 +25,12 @@ Your systems __do__ have mathematical properties
 `delete("a", delete("a", d)) = delete("a", d)`
 
 <div class="notes">
-- A function that deletes a key from a dictionary
-- It is idempotent
-- Running the operation many times gives the same result
-  as running it once
+A function that deletes a key from a dictionary
+
+Deleting a key from a dictionary once should have the same result
+as deleting it multiple times
+
+It is idempotent
 </div>
 
 ##
@@ -34,9 +38,11 @@ Your systems __do__ have mathematical properties
 `2 + 3 = 3 + 2`
 
 <div class="notes">
-- Adding numbers
-- It is commutative
-- The operation doesn't care about the order of its arguments
+Adding numbers
+
+The order in which you add them doesn't matter
+
+This is commutativity
 </div>
 
 ##
@@ -55,17 +61,23 @@ Take this function-
 `length(listOf(n, item)) = n`
 
 <div class="notes">
-This property seems pretty obvious.
-
-So a "property" in this talk will basically mean...
+Makes sense right?
 </div>
+
+##
+
+These are all behaviours that we take for granted
+
+##
+
+Made explicit using mathematical notation
 
 ##
 
 Mathematical descriptions of a system's behaviour
 
 <div class="notes">
-Some of you might... flinch? at the thought of approaching software dev
+Some are a bit averse at the thought of approaching software dev
 from a more mathematical perspective...
 </div>
 
@@ -90,6 +102,8 @@ A more formal approach will have at least two benefits
 <div class="notes">
 - By keeping "common sense" properties in mind, you'll develop more
   intuitive APIs
+- You can leverage mathematical properties to make APIs easier to understand
+  because people are already so intimately familiar with these concepts
 - Consumers of your libraries will have more confidence because you've given
   them guarantees about how your system behaves
 - "Does this function care about the order of its arguments?"
@@ -118,7 +132,9 @@ The real meat of this talk:
 Good luck getting your repl to understand that!
 </div>
 
-## Property-based __testing__
+##
+
+Property-based __testing__
 
 <div class="notes">
 So that's the property part, what about the testing part? 
@@ -151,6 +167,10 @@ reverse_involutive([1])
 reverse_involutive([])
 ```
 
+<div class="notes">
+But that's error prone, you realise you could miss edge cases etc.
+</div>
+
 ##
 
 ```python
@@ -163,3 +183,33 @@ def reverse_involutive(l):
 for l in generate_random_lists(100):
   reverse_involutive(l)
 ```
+
+##
+
+"This could be a library..."
+
+<div class="notes">
+You don't just need to specialise it to lists of characters in Python.
+
+You go off and write a really nice library that does this...
+
+...then port it to every language known to man
+
+This happened like 20 years ago but with Haskell instead of python
+</div>
+
+##
+
+QuickCheck!
+
+<div class="notes">
+That library's called quickcheck
+</div>
+
+##
+
+Hedgehog > QuickCheck
+
+<div class="notes">
+But I'm going to talk about Hedgehog, which is a more modern version
+</div>

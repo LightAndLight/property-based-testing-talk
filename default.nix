@@ -16,16 +16,15 @@ in
     src = ./.;
 
     unpackPhase = ''
-      mkdir -p $name/{reveal.js,css}
+      mkdir -p $name/reveal.js
       cd $name
-      cp $src/css/* ./css/
       cp -r ${revealjs}/* ./reveal.js/
     '';
 
     buildPhase = ''
       cat $src/slides/title.md \
           $src/slides/what-why.md \
-          $src/slides/how.md \
+          $src/slides/hedgehog.md \
           > slides.md
       pandoc -t revealjs --variable=transition:none --highlight-style=zenburn -s slides.md -o index.html
       rm slides.md
