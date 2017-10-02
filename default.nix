@@ -19,6 +19,7 @@ in
       mkdir -p $name/reveal.js
       cd $name
       cp -r ${revealjs}/* ./reveal.js/
+      cp -r $src/img .
     '';
 
     buildPhase = ''

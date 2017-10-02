@@ -6,7 +6,15 @@
 
 ##
 
-Your systems __do__ have mathematical properties
+What are mathematical properties?
+
+## 
+
+"General relationships between the inputs and outputs of operations"
+
+<div class="notes">
+So what does this mean in the context of programming?
+</div>
 
 ##
 
@@ -22,7 +30,7 @@ This means it is involutive
 
 ##
 
-`delete("a", delete("a", d)) = delete("a", d)`
+`delete(key, delete(key, d)) = delete(key, d)`
 
 <div class="notes">
 A function that deletes a key from a dictionary
@@ -72,10 +80,6 @@ These are all behaviours that we take for granted
 
 Made explicit using mathematical notation
 
-##
-
-Mathematical descriptions of a system's behaviour
-
 <div class="notes">
 Some are a bit averse at the thought of approaching software dev
 from a more mathematical perspective...
@@ -122,14 +126,6 @@ The real meat of this talk:
 
 - Mathematics is relatively unambiguous
 - Easier to get a computer to interpret and check your descriptions
-</div>
-
-##
-
-"This function will never return null except on Tuesdays"
-
-<div class="notes">
-Good luck getting your repl to understand that!
 </div>
 
 ##
@@ -208,7 +204,7 @@ That library's called quickcheck
 
 ##
 
-Hedgehog > QuickCheck
+Hedgehog!!!
 
 <div class="notes">
 But I'm going to talk about Hedgehog, which is a more modern version
