@@ -386,15 +386,48 @@ reverse xs = P.reverse xs
 ```haskell
 newtype GenT m a
   = GenT { unGen :: Size -> Seed -> Tree (MaybeT m) a }
+```
 
+##
+
+```haskell
 Gen a ~ Size -> Seed -> Tree Maybe a
+```
 
+<div class="notes">
+- Tree: each node in the tree is wrapped in a Maybe
+- The tree might have a node, and that node may have children, which
+  may have nodes, etc.
+- It's not necessary to understand how this works, but it's helpful to
+  at least be aware of what's going on
+</div>
+
+##
+
+```haskell
 class Monad m => MonadGen m where
   liftGen :: Gen a -> m a
   shrinkGen :: (a -> [a]) -> m a -> m a
   pruneGen :: m a -> m a
   scaleGen :: (Size -> Size) -> m a -> m a
   freezeGen :: m a -> m (a, m a)
+```
+
+<div class="notes">
+You'll never need to write an instance of this class, and you'll never
+even need to use the class members.
+
+Hedgehog.Gen exports these same functions without the -Gen suffix
+</div>
+
+##
+
+```haskell
+lift :: MonadGen m => Gen a -> m a
+shrink :: MonadGen m => (a -> [a]) -> m a -> m a
+prune :: MonadGen m => m a -> m a
+scale :: MonadGen m => (Size -> Size) -> m a -> m a
+freeze :: MonadGen m => m a -> m (a, m a)
 ```
 
 ## Seed

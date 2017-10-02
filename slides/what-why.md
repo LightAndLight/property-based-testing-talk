@@ -85,41 +85,44 @@ Some are a bit averse at the thought of approaching software dev
 from a more mathematical perspective...
 </div>
 
-##
+## 
 
-"...Too formal!"
-
-##
-
-"...Not practical!"
-
-<div class="notes">
-A more formal approach will have at least two benefits
-
-(These are my favourite two, feel free to think of more)
-</div>
+Mathematics will help you write better software
 
 ##
 
-1. Better code
+More intuitive APIs
 
 <div class="notes">
 - By keeping "common sense" properties in mind, you'll develop more
   intuitive APIs
 - You can leverage mathematical properties to make APIs easier to understand
   because people are already so intimately familiar with these concepts
-- Consumers of your libraries will have more confidence because you've given
-  them guarantees about how your system behaves
-- "Does this function care about the order of its arguments?"
-- "Should it?"
-- Gives you a new way to check if you're on the right track
-- It's kind of like design patterns, except people started thinking about item
-  thousands of years ago
 </div>
 
 ##
 
-2. Easy to automate testing
+More guarantees
+
+<div class="notes">
+- Consumers of your libraries will have more confidence because you've given
+  them guarantees about how your system behaves
+</div>
+
+##
+
+Another way to think about your code
+
+<div class="notes">
+- The process of thinking about properties of your code require a deep understanding
+  of what that code does
+- You will likely find and fix bugs before the testing stage because you're being
+  so analytical
+</div>
+
+##
+
+Easier to test
 
 <div class="notes">
 The real meat of this talk:
