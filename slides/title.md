@@ -1,2 +1,2 @@
-% Property-based Testing
+% Modern property-based testing with Hedgehog
 % Isaac Elliott
