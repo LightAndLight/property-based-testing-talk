@@ -8,6 +8,17 @@
 
 ```haskell
 import Hedgehog
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ##
@@ -15,6 +26,16 @@ import Hedgehog
 ```haskell
 import Hedgehog
 import qualified Hedgehog.Gen as Gen
+
+
+
+
+
+
+
+
+
+
 ```
 
 ##
@@ -23,6 +44,15 @@ import qualified Hedgehog.Gen as Gen
 import Hedgehog
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
+
+
+
+
+
+
+
+
+
 ```
 
 ##
@@ -35,6 +65,9 @@ import qualified Hedgehog.Range as Range
 reverse_involutive :: Property
 reverse_involutive =
   _
+  
+  
+  
 ```
 
 ##
@@ -54,8 +87,59 @@ import qualified Hedgehog.Range as Range
 
 reverse_involutive :: Property
 reverse_involutive =
+  _
+     
+    
+   
+   
+```
+
+##
+
+```haskell
+import Hedgehog
+import qualified Hedgehog.Gen as Gen
+import qualified Hedgehog.Range as Range
+
+reverse_involutive :: Property
+reverse_involutive =
+  property $
+     
+    
+   
+   
+```
+
+##
+
+```haskell
+import Hedgehog
+import qualified Hedgehog.Gen as Gen
+import qualified Hedgehog.Range as Range
+
+reverse_involutive :: Property
+reverse_involutive =
+  property $ do
+     
+    
+   
+   
+```
+
+##
+
+```haskell
+import Hedgehog
+import qualified Hedgehog.Gen as Gen
+import qualified Hedgehog.Range as Range
+
+reverse_involutive :: Property
+reverse_involutive =
   property $ do
     _
+    
+   
+   
 ```
 
 <div class="notes">
@@ -122,7 +206,10 @@ import qualified Hedgehog.Range as Range
 reverse_involutive :: Property
 reverse_involutive =
   property $ do
+                  Gen.list (Range.constant 0 100) Gen.ascii
     _
+    
+    
 ```
 
 <div class="notes">
@@ -152,21 +239,10 @@ import qualified Hedgehog.Range as Range
 reverse_involutive :: Property
 reverse_involutive =
   property $ do
-    _
-```
-
-##
-
-```haskell
-import Hedgehog
-import qualified Hedgehog.Gen as Gen
-import qualified Hedgehog.Range as Range
-
-reverse_involutive :: Property
-reverse_involutive =
-  property $ do
                   Gen.list (Range.constant 0 100) Gen.ascii
     _
+    
+    
 ```
 
 ##
@@ -181,6 +257,8 @@ reverse_involutive =
   property $ do
          forAll $ Gen.list (Range.constant 0 100) Gen.ascii
     _
+    
+    
 ```
 
 ##
@@ -195,6 +273,8 @@ reverse_involutive =
   property $ do
     l <- forAll $ Gen.list (Range.constant 0 100) Gen.ascii
     _
+    
+    
 ```
 
 <div class="notes">
@@ -228,6 +308,8 @@ reverse_involutive =
   property $ do
     l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
     _ 
+    
+    
 ```
 
 ##
@@ -242,6 +324,8 @@ reverse_involutive =
   property $ do
     l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
     reverse 
+    
+    
 ```
 
 ##
@@ -256,6 +340,8 @@ reverse_involutive =
   property $ do
     l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
     reverse (reverse l)
+    
+    
 ```
 
 ##
@@ -270,6 +356,8 @@ reverse_involutive =
   property $ do
     l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
     reverse (reverse l) ===
+    
+    
 ```
 
 ##
@@ -284,6 +372,40 @@ reverse_involutive =
   property $ do
     l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
     reverse (reverse l) === l
+    
+    
+```
+
+##
+
+```haskell
+import Hedgehog
+import qualified Hedgehog.Gen as Gen
+import qualified Hedgehog.Range as Range
+
+reverse_involutive :: Property
+reverse_involutive =
+  property $ do
+    l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
+    reverse (reverse l) === l
+    
+main
+```
+
+##
+
+```haskell
+import Hedgehog
+import qualified Hedgehog.Gen as Gen
+import qualified Hedgehog.Range as Range
+
+reverse_involutive :: Property
+reverse_involutive =
+  property $ do
+    l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
+    reverse (reverse l) === l
+    
+main =
 ```
 
 ##
@@ -479,6 +601,10 @@ genBinTree gen =
     ]
 ```
 
+<div class="notes">
+If you write a recursive generator like this, your tests will diverge
+</div>
+
 ##
 
 ```haskell
@@ -509,7 +635,7 @@ recursive
 ```haskell
 genBinTree :: MonadGen m => m a -> m (BinTree a)
 genBinTree gen =
-  Gen.recursive
+  Gen.recursive $
     Gen.choice
     [ Tip <$> gen ] 
     [ Bin <$>
@@ -548,29 +674,36 @@ Finding less complex failure cases
 ##
 
 ```haskell
-10? 9? 8? … 1? 0?
+10
+ └╼9
+   └╼8
+     └╼7
+       └╼...
+          └╼0
 ```
 
 ##
 ```haskell
-[3, 6, 5] ?
-
-[3, 6] [6, 3] [6, 5] [5, 6] [3, 5] [5, 3] ?
-
-[3] [6] [5] ?
-
-[] ?
+[3, 6, 5]
+ ├╼[3, 6]
+ │  ├╼[3]
+ │  │  └╼ []
+ │  └╼[6]
+ │     └╼ []
+ ├╼[6, 3]
+ │  ├╼[6]
+ │  │  └╼ []
+ │  └╼[3]
+ │     └╼ []
+...
 ```
 
 ##
 ```haskell
-Just 'a'?
-
-Nothing?
+Just 'a'
+ └╼Nothing
 ```
-##
-
-`a -> [a]`
+## `a -> [a]`
 
 ##
 
@@ -609,7 +742,7 @@ printTree :: (MonadIO m, Show a) => Gen a -> m ()
 ```haskell
 genBinTree :: MonadGen m => m a -> m (BinTree a)
 genBinTree gen =
-  Gen.recursive
+  Gen.recursive $
     Gen.choice
     [ Tip <$> gen ] 
     [ Bin <$>

@@ -6,11 +6,11 @@
 
 ##
 
-What are mathematical properties?
+What is a mathematical property?
 
 ## 
 
-"General relationships between the inputs and outputs of operations"
+"A generalised relationship between the input and output of an operation"
 
 <div class="notes">
 So what does this mean in the context of programming?
@@ -18,45 +18,20 @@ So what does this mean in the context of programming?
 
 ##
 
-`reverse(reverse(l)) = l`
+```
+reverse(reverse(l))            = l
 
-<div class="notes">
-Consider a function that reverses a list
+delete(key, delete(key, d))    = delete(key, d)
 
-It is its own inverse
-
-This means it is involutive
-</div>
+2 + 3                          = 3 + 2
+```
 
 ##
 
-`delete(key, delete(key, d)) = delete(key, d)`
-
-<div class="notes">
-A function that deletes a key from a dictionary
-
-Deleting a key from a dictionary once should have the same result
-as deleting it multiple times
-
-It is idempotent
-</div>
-
-##
-
-`2 + 3 = 3 + 2`
-
-<div class="notes">
-Adding numbers
-
-The order in which you add them doesn't matter
-
-This is commutativity
-</div>
-
-##
-
-`>>> listOf(5, 'a')`
-`[ 'a', 'a', 'a', 'a', 'a' ]`
+```
+>>> listOf(5, 'a')
+[ 'a', 'a', 'a', 'a', 'a' ]
+```
 
 <div class="notes">
 You're not limited to things that have names.
@@ -74,7 +49,7 @@ Makes sense right?
 
 ##
 
-These are all behaviours that we take for granted
+These are all very natural behaviours
 
 ##
 

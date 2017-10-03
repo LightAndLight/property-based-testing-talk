@@ -3,19 +3,8 @@ QuickCheck shrinking is error prone?
 Smallcheck? Coq?
 "I never used shrinking"
 Foreshadow size and shrinking before we get to hedgehog
-"Bintree can diverge"
 
-Pictures?
+Pictures for properties?
 = is equality
-fix before forallA
-genbintree missing $
-
-code alignment
-constant code block sizes
-
-fix question marks in shrink
-add tree to shrink explanations
-
-shorten properties part (condense)
 
 talk a bit more about hpython and how it evolved in response to my findings
