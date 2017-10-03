@@ -642,6 +642,118 @@ Bin (Tip True) False (Tip False)
 
 Shrink (mostly) for free!
 
-## Property-based testing is great
+## Testimonials
 
-## Property-based testing with Hedgehog is awesome
+- Hedgehog is great! - Isaac Elliott
+
+## hpython
+
+<div class="notes">
+- AST, Parser and pretty printer
+- All ASTs should be syntactically correct
+
+so to accomplish that, I should
+</div>
+
+##
+
+Transform the grammar into an AST, right?
+
+##
+
+Nope
+
+##
+
+Python has a few "tiers" of grammar
+
+<div class="notes">
+Python language reference not great for language tools developers
+
+There's like 3 levels of grammar-
+The "desired" grammar
+The actual grammar
+The some extra special rules on top of that
+
+And it's scattered all across the language reference
+</div>
+
+##
+
+How could I possibly determine what is or isn't valid python?
+
+<div class="notes">
+Rather than fretting, and poring though the language reference trying to make
+sure I was doing everything properly
+
+I decided to let the computer figure that out for me
+</div>
+
+##
+
+```haskell
+prop_ast_is_valid_python :: Property
+prop_ast_is_valid_python =
+  property $ do
+    program <- forAll genPythonProgram
+    let printed = printPythonProgram expr
+    res <- liftIO $ checkSyntax program
+    case res of
+      SyntaxError -> failure
+      SyntaxCorrect -> success
+```
+
+<div class="notes">
+I can generate random python programs and feed them into `python3`,
+and check if they cause a syntax error.
+
+Then I just continued implementing the official grammar, and leaned on
+the automatic shrinking to tell me what I did wrong
+</div>
+
+##
+
+Shrinking!
+
+<div class="notes">
+The shrinking catches edge cases like flies.
+
+If I messed up, or there were hidden syntax rules, hedgehog gave me really
+specific counter examples that I could easily find the solution for
+</div>
+
+##
+
+```python
+await A
+```
+
+##
+
+```python
+*A for A in A
+```
+
+##
+
+```python
+lambda *:A
+```
+
+##
+
+This would have been a lot slower with QuickCheck
+
+##
+
+I wouldn't have even considered doing it without some kind of property testing
+
+##
+
+It has saved many man-hours of test-writing and debugging
+
+## Property testing is great!
+
+## Hedgehog is great!
+
+## Thanks!
