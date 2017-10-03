@@ -137,9 +137,11 @@ forAll
   => Gen a
   -> PropertyT m a
 ```
+
 <div class="notes">
 So we use forall to "sample" from the generator
 </div>
+
 ##
 
 ```haskell
@@ -152,6 +154,8 @@ reverse_involutive =
   property $ do
     _
 ```
+
+##
 
 ```haskell
 import Hedgehog
@@ -566,21 +570,13 @@ Nothing?
 ```
 ##
 
-```haskell
-a -> [a]
-```
+`a -> [a]`
 
 ##
 
 ```haskell
 shrink :: MonadGen m => (a -> [a]) -> m a -> m a
 prune :: MonadGen m => m a -> m a
-```
-
-##
-
-```haskell
-list :: MonadGen m => Range Int -> m a -> m [a]
 ```
 
 ##
