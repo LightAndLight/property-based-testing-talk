@@ -27,7 +27,7 @@ x + y                          = y + x
 ```
 
 <div class="notes">
-Note: '=' means "is the same as", not assignment
+Here's a couple of properties about common functions
 </div>
 
 ##
@@ -63,10 +63,11 @@ Made explicit using mathematical notation
 
 Mathematics will help you write better software
 
-<div>
+<div class="notes">
 - I want to take this time to have a little spiel about why
   you shouldn't switch off now that I've mentioned maths
 - Maths is important for writing good code, no matter your field
+</div>
 
 ##
 
