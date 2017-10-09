@@ -26,6 +26,7 @@ in
       cat $src/slides/title.md \
           $src/slides/what-why.md \
           $src/slides/hedgehog.md \
+          $src/slides/hpython.md \
           > slides.md
       pandoc -t revealjs --variable=transition:none --highlight-style=zenburn -s slides.md -o index.html
       rm slides.md

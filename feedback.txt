@@ -5,6 +5,5 @@ Smallcheck? Coq?
 Foreshadow size and shrinking before we get to hedgehog
 
 Pictures for properties?
-= is equality
 
 talk a bit more about hpython and how it evolved in response to my findings
