@@ -6,11 +6,11 @@
 
 ##
 
-What are mathematical properties?
+What is a mathematical property?
 
 ## 
 
-"General relationships between the inputs and outputs of operations"
+"A generalised relationship between the input and output of an operation"
 
 <div class="notes">
 So what does this mean in the context of programming?
@@ -18,45 +18,24 @@ So what does this mean in the context of programming?
 
 ##
 
-`reverse(reverse(l)) = l`
+```
+reverse(reverse(l))            = l
+
+delete(key, delete(key, d))    = delete(key, d)
+
+x + y                          = y + x
+```
 
 <div class="notes">
-Consider a function that reverses a list
-
-It is its own inverse
-
-This means it is involutive
+Here's a couple of properties about common functions
 </div>
 
 ##
 
-`delete(key, delete(key, d)) = delete(key, d)`
-
-<div class="notes">
-A function that deletes a key from a dictionary
-
-Deleting a key from a dictionary once should have the same result
-as deleting it multiple times
-
-It is idempotent
-</div>
-
-##
-
-`2 + 3 = 3 + 2`
-
-<div class="notes">
-Adding numbers
-
-The order in which you add them doesn't matter
-
-This is commutativity
-</div>
-
-##
-
-`>>> listOf(5, 'a')`
-`[ 'a', 'a', 'a', 'a', 'a' ]`
+```
+>>> listOf(5, 'a')
+[ 'a', 'a', 'a', 'a', 'a' ]
+```
 
 <div class="notes">
 You're not limited to things that have names.
@@ -74,39 +53,38 @@ Makes sense right?
 
 ##
 
-These are all behaviours that we take for granted
+These are all very natural behaviours
 
 ##
 
 Made explicit using mathematical notation
 
-<div class="notes">
-Some are a bit averse at the thought of approaching software dev
-from a more mathematical perspective...
-</div>
-
 ## 
 
 Mathematics will help you write better software
 
-##
-
-More intuitive APIs
-
 <div class="notes">
-- By keeping "common sense" properties in mind, you'll develop more
-  intuitive APIs
-- You can leverage mathematical properties to make APIs easier to understand
-  because people are already so intimately familiar with these concepts
+- I want to take this time to have a little spiel about why
+  you shouldn't switch off now that I've mentioned maths
+- Maths is important for writing good code, no matter your field
 </div>
 
 ##
 
-More guarantees
+Nicer APIs
 
 <div class="notes">
-- Consumers of your libraries will have more confidence because you've given
-  them guarantees about how your system behaves
+- We already understand many "mathematical" concepts at a visceral level
+- If I gave you a function and said "this reverses items in the list",
+  you would expect it to be involutive, regardless of if you knew that word
+- By keeping mathematical properties in mind, you can develop APIs
+  that "just feel right", because you're tapping into people subsconscious
+  expectations of how it should work
+- This is the case for some of my favourite "haskelly" concepts, such
+  as FRP and parser combinators- they have mathematical formalisations,
+  which is why they're so wonderful
+- What I'm really trying to describe is called "Denotation driven design",
+  but that talk's already been done by Conal
 </div>
 
 ##
@@ -117,18 +95,22 @@ Another way to think about your code
 - The process of thinking about properties of your code require a deep understanding
   of what that code does
 - You will likely find and fix bugs before the testing stage because you're being
-  so analytical
+  so critical
+- Sometimes you find that your code almost satisfies some property, 
+  and changing it to actually satisfy that property brings it more input
+  line with what you intended
 </div>
 
 ##
 
-Easier to test
+Easier and more robust testing
 
 <div class="notes">
-The real meat of this talk:
-
 - Mathematics is relatively unambiguous
 - Easier to get a computer to interpret and check your descriptions
+- We're going to write mathematical properties and check them mechanically
+- But there are tools that you can use to actually *prove* that these
+  properties hold in your programs.
 </div>
 
 ##
@@ -205,10 +187,65 @@ QuickCheck!
 That library's called quickcheck
 </div>
 
-##
+## Property Testing Concepts
 
-Hedgehog!!!
+## Size
 
 <div class="notes">
-But I'm going to talk about Hedgehog, which is a more modern version
+A generator needs to know "how big of a thing" to generate
+
+- You might want to generate a large or small thing
+- Or you might want to generate something of a consistent size no
+  matter what
 </div>
+
+## Shrinking
+
+##
+
+Finding less complex failure cases
+
+<div class="notes">
+- Generator may generate large, complex input that fails
+- Changes are there is a less complex input that also fails
+- Shrinking is the process of finding that simpler failure case
+</div>
+
+##
+
+```haskell
+10
+ └╼9
+   └╼8
+     └╼7
+       └╼...
+          └╼0
+```
+
+##
+```haskell
+[3, 6, 5]
+ ├╼[3, 6]
+ │  ├╼[3]
+ │  │  └╼ []
+ │  └╼[6]
+ │     └╼ []
+ ├╼[6, 3]
+ │  ├╼[6]
+ │  │  └╼ []
+ │  └╼[3]
+ │     └╼ []
+...
+```
+
+##
+```haskell
+Just 'a'
+ └╼Nothing
+```
+## `a -> [a]`
+
+##
+
+Getting good shrinking in QuickCheck takes a bit of effort
+

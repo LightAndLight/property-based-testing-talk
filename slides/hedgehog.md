@@ -4,10 +4,28 @@
 
 <img src="./img/hedgehog_github.png" />
 
+<div class="notes">
+First Haskell version was released in April this year
+Significant improvement over QuickCheck
+
+Absolutely wonderful
+</div>
+
 ##
 
 ```haskell
 import Hedgehog
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ##
@@ -15,6 +33,16 @@ import Hedgehog
 ```haskell
 import Hedgehog
 import qualified Hedgehog.Gen as Gen
+
+
+
+
+
+
+
+
+
+
 ```
 
 ##
@@ -23,6 +51,15 @@ import qualified Hedgehog.Gen as Gen
 import Hedgehog
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
+
+
+
+
+
+
+
+
+
 ```
 
 ##
@@ -35,6 +72,9 @@ import qualified Hedgehog.Range as Range
 reverse_involutive :: Property
 reverse_involutive =
   _
+  
+  
+  
 ```
 
 ##
@@ -54,8 +94,59 @@ import qualified Hedgehog.Range as Range
 
 reverse_involutive :: Property
 reverse_involutive =
+  _
+     
+    
+   
+   
+```
+
+##
+
+```haskell
+import Hedgehog
+import qualified Hedgehog.Gen as Gen
+import qualified Hedgehog.Range as Range
+
+reverse_involutive :: Property
+reverse_involutive =
+  property $
+     
+    
+   
+   
+```
+
+##
+
+```haskell
+import Hedgehog
+import qualified Hedgehog.Gen as Gen
+import qualified Hedgehog.Range as Range
+
+reverse_involutive :: Property
+reverse_involutive =
+  property $ do
+     
+    
+   
+   
+```
+
+##
+
+```haskell
+import Hedgehog
+import qualified Hedgehog.Gen as Gen
+import qualified Hedgehog.Range as Range
+
+reverse_involutive :: Property
+reverse_involutive =
   property $ do
     _
+    
+   
+   
 ```
 
 <div class="notes">
@@ -122,7 +213,10 @@ import qualified Hedgehog.Range as Range
 reverse_involutive :: Property
 reverse_involutive =
   property $ do
+                  Gen.list (Range.constant 0 100) Gen.ascii
     _
+    
+    
 ```
 
 <div class="notes">
@@ -152,21 +246,10 @@ import qualified Hedgehog.Range as Range
 reverse_involutive :: Property
 reverse_involutive =
   property $ do
-    _
-```
-
-##
-
-```haskell
-import Hedgehog
-import qualified Hedgehog.Gen as Gen
-import qualified Hedgehog.Range as Range
-
-reverse_involutive :: Property
-reverse_involutive =
-  property $ do
                   Gen.list (Range.constant 0 100) Gen.ascii
     _
+    
+    
 ```
 
 ##
@@ -181,6 +264,8 @@ reverse_involutive =
   property $ do
          forAll $ Gen.list (Range.constant 0 100) Gen.ascii
     _
+    
+    
 ```
 
 ##
@@ -195,6 +280,8 @@ reverse_involutive =
   property $ do
     l <- forAll $ Gen.list (Range.constant 0 100) Gen.ascii
     _
+    
+    
 ```
 
 <div class="notes">
@@ -228,6 +315,8 @@ reverse_involutive =
   property $ do
     l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
     _ 
+    
+    
 ```
 
 ##
@@ -242,6 +331,8 @@ reverse_involutive =
   property $ do
     l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
     reverse 
+    
+    
 ```
 
 ##
@@ -256,6 +347,8 @@ reverse_involutive =
   property $ do
     l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
     reverse (reverse l)
+    
+    
 ```
 
 ##
@@ -270,6 +363,8 @@ reverse_involutive =
   property $ do
     l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
     reverse (reverse l) ===
+    
+    
 ```
 
 ##
@@ -284,6 +379,40 @@ reverse_involutive =
   property $ do
     l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
     reverse (reverse l) === l
+    
+    
+```
+
+##
+
+```haskell
+import Hedgehog
+import qualified Hedgehog.Gen as Gen
+import qualified Hedgehog.Range as Range
+
+reverse_involutive :: Property
+reverse_involutive =
+  property $ do
+    l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
+    reverse (reverse l) === l
+    
+main
+```
+
+##
+
+```haskell
+import Hedgehog
+import qualified Hedgehog.Gen as Gen
+import qualified Hedgehog.Range as Range
+
+reverse_involutive :: Property
+reverse_involutive =
+  property $ do
+    l <- forAll $ Gen.list (Range.linear 0 100) Gen.ascii
+    reverse (reverse l) === l
+    
+main =
 ```
 
 ##
@@ -387,53 +516,6 @@ reverse xs = P.reverse xs
 
 ##
 
-```haskell
-newtype GenT m a
-  = GenT { unGen :: Size -> Seed -> Tree (MaybeT m) a }
-```
-
-##
-
-```haskell
-Gen a ~ Size -> Seed -> Tree Maybe a
-```
-
-<div class="notes">
-- Tree: each node in the tree is wrapped in a Maybe
-- The tree might have a node, and that node may have children, which
-  may have nodes, etc.
-- It's not necessary to understand how this works, but it's helpful to
-  at least be aware of what's going on
-</div>
-
-##
-
-```haskell
-class Monad m => MonadGen m where
-  liftGen :: Gen a -> m a
-  shrinkGen :: (a -> [a]) -> m a -> m a
-  pruneGen :: m a -> m a
-  scaleGen :: (Size -> Size) -> m a -> m a
-  freezeGen :: m a -> m (a, m a)
-```
-
-<div class="notes">
-You'll never need to write an instance of this class, and you'll never
-even need to use the class members.
-
-Hedgehog.Gen exports these same functions without the -Gen suffix
-</div>
-
-##
-
-```haskell
-lift :: MonadGen m => Gen a -> m a
-shrink :: MonadGen m => (a -> [a]) -> m a -> m a
-prune :: MonadGen m => m a -> m a
-scale :: MonadGen m => (Size -> Size) -> m a -> m a
-freeze :: MonadGen m => m a -> m (a, m a)
-```
-
 ## Seed
 
 ```haskell
@@ -479,6 +561,10 @@ genBinTree gen =
     ]
 ```
 
+<div class="notes">
+If you write a recursive generator like this, your tests will diverge
+</div>
+
 ##
 
 ```haskell
@@ -509,7 +595,7 @@ recursive
 ```haskell
 genBinTree :: MonadGen m => m a -> m (BinTree a)
 genBinTree gen =
-  Gen.recursive
+  Gen.recursive $
     Gen.choice
     [ Tip <$> gen ] 
     [ Bin <$>
@@ -519,58 +605,30 @@ genBinTree gen =
     ]
 ```
 
-##
-
-```haskell
-singleton :: a -> Range a
-constant :: a -> a -> Range a
-linear :: Integral a => a -> a -> Range a
-exponential :: Integral a => a -> a -> Range a
-```
-
-
 ## Shrinking
 
 ##
 
-<img src="./img/hedgehog_tests_failed.png" />
-
-##
-
-Finding less complex failure cases
+```haskell
+newtype GenT m a
+  = GenT { unGen :: Size -> Seed -> Tree (MaybeT m) a }
+```
 
 <div class="notes">
-- Generator may generate large, complex input that fails
-- Changes are there is a less complex input that also fails
-- Shrinking is the process of finding that simpler failure case
+The ways a value can be shrunk is represented by a rose tree of maybe values
 </div>
 
 ##
 
 ```haskell
-10? 9? 8? … 1? 0?
+Gen a ~ Size -> Seed -> Tree Maybe a
 ```
 
-##
-```haskell
-[3, 6, 5] ?
-
-[3, 6] [6, 3] [6, 5] [5, 6] [3, 5] [5, 3] ?
-
-[3] [6] [5] ?
-
-[] ?
-```
-
-##
-```haskell
-Just 'a'?
-
-Nothing?
-```
-##
-
-`a -> [a]`
+<div class="notes">
+- Tree: each node in the tree is wrapped in a Maybe
+- The tree might have a node, and that node may have children, which
+  may have nodes, etc.
+</div>
 
 ##
 
@@ -604,12 +662,21 @@ printTree :: (MonadIO m, Show a) => Gen a -> m ()
  ...
 ```
 
+<div class="notes">
+Because we carry around this shrinking information, the process
+of building bigger generators from smaller ones can extend the shrinking
+tree
+
+So we know how to shrink booleans, we know how to shrinking lists,
+therefor we know how to shrink lists of bools
+</div>
+
 ##
 
 ```haskell
 genBinTree :: MonadGen m => m a -> m (BinTree a)
 genBinTree gen =
-  Gen.recursive
+  Gen.recursive $
     Gen.choice
     [ Tip <$> gen ] 
     [ Bin <$>
@@ -620,7 +687,8 @@ genBinTree gen =
 ```
 
 <div class="notes">
-Shrinking behaviour is basically correct by construction
+You can but in next to no effort and get usable shrinking behaviour
+immediately
 </div>
 
 ##
@@ -634,122 +702,7 @@ Bin (Tip True) False (Tip False)
  └╼Bin (Tip False) False (Tip False)
 ```
 
-##
-
-Shrink (mostly) for free!
-
 ## Testimonials
 
-- Hedgehog is great! - Isaac Elliott
+Hedgehog is great! - Isaac Elliott
 
-## hpython
-
-<div class="notes">
-- AST, Parser and pretty printer
-- All ASTs should be syntactically correct
-
-so to accomplish that, I should
-</div>
-
-##
-
-Transform the grammar into an AST, right?
-
-##
-
-Nope
-
-##
-
-Python has a few "tiers" of grammar
-
-<div class="notes">
-Python language reference not great for language tools developers
-
-There's like 3 levels of grammar-
-The "desired" grammar
-The actual grammar
-The some extra special rules on top of that
-
-And it's scattered all across the language reference
-</div>
-
-##
-
-How could I possibly determine what is or isn't valid python?
-
-<div class="notes">
-Rather than fretting, and poring though the language reference trying to make
-sure I was doing everything properly
-
-I decided to let the computer figure that out for me
-</div>
-
-##
-
-```haskell
-prop_ast_is_valid_python :: Property
-prop_ast_is_valid_python =
-  property $ do
-    program <- forAll genPythonProgram
-    let printed = printPythonProgram expr
-    res <- liftIO $ checkSyntax program
-    case res of
-      SyntaxError -> failure
-      SyntaxCorrect -> success
-```
-
-<div class="notes">
-I can generate random python programs and feed them into `python3`,
-and check if they cause a syntax error.
-
-Then I just continued implementing the official grammar, and leaned on
-the automatic shrinking to tell me what I did wrong
-</div>
-
-##
-
-Shrinking!
-
-<div class="notes">
-The shrinking catches edge cases like flies.
-
-If I messed up, or there were hidden syntax rules, hedgehog gave me really
-specific counter examples that I could easily find the solution for
-</div>
-
-##
-
-```python
-await A
-```
-
-##
-
-```python
-*A for A in A
-```
-
-##
-
-```python
-lambda *:A
-```
-
-##
-
-This would have been a lot slower with QuickCheck
-
-##
-
-I wouldn't have even considered doing it without some kind of property testing
-
-##
-
-It has saved many man-hours of test-writing and debugging
-
-## Property testing is great!
-
-## Hedgehog is great!
-
-## Thanks!
